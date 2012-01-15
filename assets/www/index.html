@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Go Wildly</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="jquery.mobile-1.0.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="gowildly.css" type="text/css" media="screen" title="gowildly" charset="utf-8">
+	<script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="jquery.mobile-1.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="index.js"></script>
+</head>
+
+<body onload="init();" id="stage" class="theme">
+
+<div data-role="page" id="intro-page" data-theme="a">
+
+	<div data-role="header">
+		<h1>Go Wildly</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="home_icon.png" height="120" width="120" alt="Go Wildly" /></p>
+
+		<a href="#" onclick="navigateCreateTrailPage(); return false" data-transition="slide" data-role="button" data-icon="star">Create a Trail</a>
+		<a href="#find" data-transition="slide" data-role="button" data-icon="star">Find a Trail</a>
+		<a href="#" data-transition="slide" data-role="button" data-icon="star">My Profile</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="create-trail-page" data-theme="a">
+
+	<div data-role="header">
+		<a href="#intro-page" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Create a Trail</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="trail.png" height="51" width="57" alt="Trail" /></p>
+
+		<p>Tell us a bit about your trail:</p>
+		<label for="create-trail-page-name">Name</label>
+		<input type="text" id="create-trail-page-name" />
+		<label for="create-trail-page-comment">Comment</label>
+		<textarea id="create-trail-page-comment"></textarea>
+	
+		<p>... and when you're ready:</p>
+		<div id="create-trail-page-start-div"><a href="#" onclick="createTrail(); return false" data-transition="slide" data-role="button" data-icon="star" id="create-trail-page-start-trail-button">Start Trail</a></div>
+		<div id="create-trail-page-stop-div"><a href="#" onclick="saveTrail(); return false" data-transition="slide" data-role="button" data-icon="star" id="create-trail-page-save-trail-button">Save Trail</a></div>
+
+		<input type="hidden" id="create-trail-page-trail-id" value="" />
+	</div>
+
+</div>
+
+<div data-role="page" id="record-trail-page" data-theme="a">
+
+	<div data-role="header">
+		<h1>Now Recording</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="trail.png" height="51" width="57" alt="Trail" /></p>
+
+		<p>Now that you're on your trail, you can do a few more things whenever you like:</p>
+		<a href="#" onclick="navigateCreateSpotPage(); return false" data-transition="slide" data-role="button" data-icon="star" id="record-trail-page-create-a-spot-button">Create a spot</a>
+		<a href="#" onclick="navigateCreateRacePage(); return false" data-transition="slide" data-role="button" data-icon="star" id="record-trail-page-create-a-race-button">Create a race</a>
+
+		<p>... and when you're done:</p>
+		<a href="#" onclick="finishTrail(); return false" data-role="button" data-icon="star" id="record-trail-page-finish-trail-button">Finish Trail</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="create-race-page" data-theme="a">
+
+	<div data-role="header">
+		<a href="#record-trail-page" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Create a Race</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="race.png" height="50" width="36" alt="Race" /></p>
+
+		<p>Tell us a bit about your race:</p>
+		<label for="create-race-page-name">Name</label>
+		<input type="text" id="create-race-page-name" />
+		<label for="create-race-page-comment">Comment</label>
+		<textarea id="create-race-page-comment"></textarea>
+
+		<p>... choose a treasure for the winner:</p>
+		<a href="#" onclick="navigateCreateTrailChooseTreasure('create-race-page'); return false" data-transition="slide" data-role="button" data-icon="star" id="create-race-page-champions-treasure-button">Champion's Treasure</a>
+
+		<p>... when you're ready, set:</p>
+		<a href="#" onclick="startCreateRace(); return false" data-transition="slide" data-role="button" data-icon="star" id="create-race-page-go-button">Go!</a>
+
+		<input type="hidden" id="create-race-page-race-id" value="0" />
+	</div>
+
+</div>
+
+<div data-role="page" id="record-race-page" data-theme="a">
+
+	<div data-role="header">
+		<h1>Recording Race</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="race.png" height="50" width="36" alt="Race" /></p>
+
+		<h1 align="center">Go faster!</h1>
+
+		<p>When you cross your finish line hit:</p>
+		<a href="#" onclick="finishCreateRace(); return false" data-direction="reverse" data-role="button" data-icon="star" id="create-race-page-finish-button">Finish</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="create-spot-page" data-theme="a">
+
+	<div data-role="header">
+		<a href="#record-trail-page" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Create a Spot</h1>
+	</div>
+
+	<div data-role="content">
+		<p>Tell us a bit about your spot:</p>
+		<label for="create-spot-page-name">Name</label>
+		<input type="text" id="create-spot-page-name" />
+		<label for="create-spot-page-comment">Comment</label>
+		<textarea id="create-spot-page-comment"></textarea>
+
+		<p>... maybe even take a photo:</p>
+		<a href="#" onclick="getPictureForTrail('create-spot-page-photo-viewport'); return false" data-transition="slide" data-role="button" data-icon="star" id="create-spot-page-take-photo-button">Take Photo</a>
+		<p align="center" class="photo-viewport"><img src="home_icon.png" height="120" width="120" id="create-spot-page-photo-viewport" /></p>
+
+		<p>... and leave some treasure:</p>	
+		<a href="#" onclick="navigateCreateTrailChooseTreasure('create-spot-page'); return false" data-transition="slide" data-role="button" data-icon="star" id="create-spot-page-leave-treasure-button">Leave Treasure</a>
+
+		<p>... and when you're done:</p>
+		<a href="#" onclick="finishCreateSpot(); return false" data-direction="reverse" data-role="button" data-icon="star" id="create-spot-page-create-spot-button">Create Spot</a>
+
+		<input type="hidden" id="create-spot-page-spot-id" value="0" />
+	</div>
+
+</div>
+
+<div data-role="page" id="create-trail-choose-treasure-page" data-theme="a">
+
+	<div data-role="header">
+		<a href="#" onclick="cancelCreateTrailChooseTreasurePage(); return false" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Choose a Treasure</h1>
+	</div>
+
+	<div data-role="content">
+		<p align="center"><img src="treasure.png" height="51" width="48" alt="Treasure" /></p>
+
+		<p>Pick something from our treasure chest:</p>
+		<a href="#" onclick="navigateTrailPickTreasurePage(); return false" data-transition="slide" data-role="button" data-icon="star" id="create-trail-choose-treasure-page-pick-treasure-button">Pick Treasure</a>
+
+		<p>... and leave something personal:</p>
+		<label for="create-trail-choose-treasure-page-comment">Comment</label>
+		<textarea id="create-trail-choose-treasure-page-comment"></textarea>
+		
+		<p>... and when you're done:</p>
+		<a href="#" onclick="doneCreateTrailChooseTreasurePage(); return false" data-direction="reverse" data-role="button" data-icon="star" id="create-trail-choose-treasure-page-done-button">Done</a>
+		
+		<input type="hidden" id="create-trail-choose-treasure-page-back-location" value="" />
+	</div>
+
+</div>
+
+<div data-role="page" id="treasure-chest">
+
+	<div data-role="header">
+		<a href="#choose-treasure" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Pick a Treasure</h1>
+	</div>
+
+	<div data-role="content">
+		Not done!
+	</div>
+
+</div>
+
+<div data-role="page" id="find">
+
+	<div data-role="header">
+		<a href="#intro" data-direction="reverse" data-transition="slide">Cancel</a>
+		<h1>Find Trails</h1>
+	</div>
+
+	<div data-role="content">
+		<a href="#" onclick="myTrails(); return false" data-transition="slide" data-role="button" data-icon="star" data-theme="a" id="my-trails">My Trails</a>
+		<a href="#find-from-friends" data-transition="slide" data-role="button" data-icon="star" data-theme="a" id="trails-from-friends">Friend Trails</a>
+	</div>
+	
+</div>
+
+<div data-role="page" id="find-my-trails">
+
+	<div data-role="header">
+		<a href="#find" data-direction="reverse" data-transition="slide">Back</a>
+		<h1>Nearby Trails</h1>
+	</div>
+
+	<div data-role="content">
+		<div id="my-trails-list">
+		</div>
+	</div>	
+
+</div>
+
+<div data-role="page" id="find-from-friends">
+
+	<div data-role="header">
+		<h1>Friend Trails</h1>
+	</div>
+
+	<div data-role="content">	
+		<ul data-role="listview" data-inset="true">
+			<li><a href="index.html">
+				<img src="images/album-bb.jpg" />
+				<h3>Broken Bells</h3>
+				<p>Broken Bells</p>
+				</a><a href="#trail-detail" data-rel="dialog" data-transition="slide">Purchase album
+			</a></li>
+			<li><a href="index.html">
+				<img src="images/album-hc.jpg" />
+				<h3>Warning</h3>
+				<p>Hot Chip</p>
+			</a><a href="#trail-detail" data-rel="dialog" data-transition="slide">Purchase album
+			</a></li>
+			<li><a href="index.html">
+				<img src="images/album-p.jpg" />
+				<h3>Wolfgang Amadeus Phoenix</h3>
+				<p>Phoenix</p>
+				</a><a href="#trail-detail" data-rel="dialog" data-transition="slide">Purchase album
+			</a></li>
+		</ul>
+	</div>	
+
+</div>
+
+<div data-role="page" id="trail-detail">
+
+	<div data-role="header">
+		<h1>Name of Trail Here</h1>
+	</div>
+
+	<div data-role="content">
+
+		<p>This is the description of the trail from the grand poobah.</p>
+
+		<div class="ui-grid-c">
+			<div class="ui-block-a">Check-ins<br />25</div>
+			<div class="ui-block-b">Races<br />2</div>
+			<div class="ui-block-c">Spots<br />5</div>
+			<div class="ui-block-a">Distance<br />5 miles</div>
+		</div>
+		
+		<ul data-role="listview" data-inset="true">
+			<li><a href="#trail-detail-map">
+				<h3>Details & Map</h3>
+				<p class="ui-li-aside">Bear Valley, CA</p>
+			</a></li>
+			<li><a href="#trail-pictures">
+				<h3>Pictures</h3>
+				<span class="ui-li-count">4</span></a>
+			</li>
+			<li><a href="#trail-leaders">
+				<img src="images/album-p.jpg" />
+				<h3>Leaderboard</h3>
+				<p class="ui-li-aside">Steve Wood</p>
+			</a></li>
+		</ul>
+
+		<a href="#explore-trail" data-transition="slide" data-role="button" data-icon="star" data-theme="a" id="explore-trail">Explore</a>
+
+	</div>	
+
+</div>
+
+<div data-role="page" id="explore-trail">
+
+	<div data-role="header">
+		<h1>Explore Trail</h1>
+	</div>
+
+	<div data-role="content">
+
+		<p>Need to show address details and trail description details here - cannot check in until they arrive at the start.</p>
+
+		<label for="trail-checkin-words">Say something:</label>
+		<textarea id="trail-checkin-words"></textarea>
+		
+		<a href="#run-trail" data-transition="slide" data-role="button" data-icon="star" data-theme="a" id="run-trail-button">Check-in</a>
+
+	</div>	
+
+</div>
+
+<div data-role="page" id="run-trail">
+
+	<div data-role="header">
+		<h1>Trail</h1>
+	</div>
+
+	<div data-role="content">
+
+		<p>
+			This screen needs to do a few things:
+			1. monitor location and provide a warning screen if they fall off the trail (right or left) based on coordinates.
+			2. monitor for 'spots' along the trail and notify the user to check-in, take a photo, leave a present, etc - that whole screen sequence stuff.
+			3. monitor for 'races' along the trail and tell the user - the user can then accept the challenge or ignore.  If they ignore the challenge, don't ask them again for this run of the trail.
+			4. allow the user to take pictures anywhere they like along the trail and post comments
+		</p>
+
+	</div>	
+
+</div>
+
+</body>
+</html>
