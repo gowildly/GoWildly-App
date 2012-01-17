@@ -39,7 +39,7 @@ function setupDatabase(tx) {
 	// Remove this later - END
 
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Trails (trailId unique, name, comment)');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS TrailLocationData (trailId, raceId, spotId, latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, speed, timestamp)');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS TrailLocationData (trailId, raceId, spotId, latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, speed, totalTime)');
     tx.executeSql('CREATE TABLE IF NOT EXISTS Races (raceId, name, comment, time, distance)');
     tx.executeSql('CREATE TABLE IF NOT EXISTS RaceChampionTrasures (treasureId, raceId, comment)');
     tx.executeSql('CREATE TABLE IF NOT EXISTS Spots (spotId, name, comment, treasureId)');
@@ -188,7 +188,7 @@ function onLocationSuccess(position) {
 // Record the location data into our database.
 //
 function populateLocation(tx) {
-	tx.executeSql('INSERT INTO TrailLocationData (trailId, raceId, spotId, latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, speed, timestamp) VALUES (' + $('#create-trail-page-trail-id').val() + ', ' + $('#create-race-page-race-id').val() + ', ' + $('#create-spot-page-spot-id').val() + ', ' + latitude + ', ' + longitude + ', ' + altitude + ', ' + accuracy + ', ' + altitudeAccuracy + ', ' + heading + ', ' + speed + ', "' + timestamp + '")');
+	tx.executeSql('INSERT INTO TrailLocationData (trailId, raceId, spotId, latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, speed, totalTime) VALUES (' + $('#create-trail-page-trail-id').val() + ', ' + $('#create-race-page-race-id').val() + ', ' + $('#create-spot-page-spot-id').val() + ', ' + latitude + ', ' + longitude + ', ' + altitude + ', ' + accuracy + ', ' + altitudeAccuracy + ', ' + heading + ', ' + speed + ', "' + timestamp + '")');
 
 	// We only want to record the spot once - so we clear the spot id after insert always
 	$('#create-spot-page-spot-id').val('0');
